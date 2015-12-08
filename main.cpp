@@ -14,11 +14,11 @@ using namespace std;
 
 int main()
 {
-	ofstream z("z.txt");
+	ofstream z("out.txt");
 	
 	Copying copy(&z);
 	
-	PairEnumerator pe("input.txt", "input2.txt");
+	PairEnumerator pe("in1.txt", "in2.txt");
 	
 	copy.addEnumerator(&pe);
 	copy.run();
