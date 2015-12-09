@@ -1,0 +1,123 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[latin2]{inputenc}
+\usepackage[magyar]{babel}
+
+% használt betûtípusok  beállítása
+\usepackage{palatino}
+\usepackage{courier}
+
+%%% felsõ és alsó margó beállítása, elhagyható
+\usepackage[top=3cm,bottom=2cm,inner=2.5cm,outer=2.5cm]{geometry}
+
+% bekezdés behúzásának átállítása
+\setlength{\parindent}{0pt} 
+
+% matematikai képletek írásához
+\usepackage{amsmath}   
+\usepackage{amssymb}
+
+% függvények kapcsolódási szerkezetének rajzolásához
+\usepackage{tikz}
+\usetikzlibrary{shapes}
+
+% stuki rajzolásához be kell tölteni a .tex forrásfájllal azonos könyvtárba helyezett stuki.sty-t
+\usepackage{stuki}
+
+% programkód megjelenítéséhez
+\usepackage{listings}
+\lstset{language=C++, basicstyle=\ttfamily, keywordstyle=\color{blue}\ttfamily, stringstyle=\color{red}\ttfamily}
+
+% specifikáció állapotterében \alatt{arg1}{arg2} saját paranccsal adható meg
+% az arg1 típusértékhalmaz és a hozzá tartozó arg2 változó
+\newcommand*{\alatt}[2]{\underset{\mathop{\vrule height 5pt width 0pt\relax #2}}{#1}}
+
+% a specifikáció utófeltételében használt nagy függvények definiálása
+\DeclareMathOperator*{\SEARCH}{\textit{\small \textbf{SEARCH}}}
+\DeclareMathOperator*{\SELECT}{\textit{\small \textbf{SELECT}}}
+\DeclareMathOperator*{\MAX}{\textit{\small \textbf{MAX}}}
+
+%%% az adatokat tartalmazó doboz rajzolásához
+\usepackage{tcolorbox}
+
+% sorszámozott listához
+\usepackage{enumitem}
+
+% több oszlopos bekezdések
+\usepackage{multicol}
+
+\usepackage{graphicx}
+\usepackage{hyperref}
+
+\begin{document}
+
+%%%%%%%%%%%%%%%%%%%% SZEMÉLYES ADATOK %%%%%%%%%%%%%%%%%%%%
+\begin{center}
+\begin{tcolorbox}[title=\Large{\textsc{Objektum elvû alkalmazások fejlesztése}}\\Dokumentáció a 4. házi feladathoz,arc=0mm]
+\begin{minipage}[t]{0.5\textwidth}
+	\textbf{Név:} Soós Bálint\\
+	\textbf{Neptun kód:} HDX9MU\\
+	\textbf{Elérhetõség:} soba95@inf.elte.hu
+\end{minipage}
+\begin{minipage}[t]{0.5\textwidth}\raggedleft{
+	\textbf{Csoport:} 8.\\
+	\textbf{Feladatszám:} 7.\\
+	\today}
+\end{minipage}
+\end{tcolorbox}
+\end{center}
+\vspace{18pt}
+
+%%%%%%%%%%%%%%%%%%%% FELADAT LEÍRÁSA %%%%%%%%%%%%%%%%%%%%
+{\textbf {Feladatleírás}}\\[6pt]
+Egy szöveges állomány egy csoport hallgatóinak megajánlott gyakorlati jegyeit
+tartalmazza neptunkód-osztályzat alakú sorok formájában (az neptunkód 6 karakter
+hosszú, utána egy szóköz jön, azt követõen pedig egy 0 és 5 közötti egész szám).
+Azok a hallgatók, akik sikerrel szerepeltek tehetséggondozási programozási
+versenyen, a megajánlott jegyüknél eggyel jobbat kapnak, pontosabban azoknak a
+hallgatóknak nõ eggyel a gyakorlati jegye, akik a programozási versenyen 40
+pontnál jobb eredményt értek el, de a megajánlott jegyük nem elégtelen vagy jeles.
+A verseny eredményeit egy másik szöveges állomány tartalmazza neptunkódpontszám
+alakú sorok formájában (az neptunkód 6 karakter hosszú, utána egy
+szóköz jön, azt követõen pedig egy 0 és 100 közötti egész szám). Készítse el a
+csoport hallgatóinak végleges gyakorlati jegyeit tartalmazó szöveges állományt 
+neptunkód-osztályzat alakú sorok formájában! Mindkét állomány neptunkód szerint
+növekedõen rendezett: az gyakorlati jegyeket tartalmazó állomány neptunkód szerint
+szigorúan növekedõen rendezett, de a második állomány a programozási verseny
+részeredményeit tartalmazza, nem az elért összpontszámot. Így ebben az
+állományban egy neptunkód, többször is szerepelhet egymás után, ezért egy-egy
+hallgató összpontszámát ki kell számolni. (Kizárólag a saját felsorolók Next()
+metódusaiban használhat elágazásokat!)
+
+\vspace{18pt}
+
+{\textbf {Programterv}}\\[6pt]
+A feladat megoldásához elképzelhetünk egy olyan adatabsztrakciót, ahol elég csak a Neptun kód, jegy párokon végigiterálnunk, és kiírni õket a kimeneti fájlba. Ehhez kell egy egyedi felsoroló, amely elemenként megadja az adott neptun kódhoz tartozó diák aktuális jegyét, és a versenyen elért pontszámát. Ha ez meghaladja a 40-et, és a jegye legalább 2-es, és legfeljebb 4-es, akkor eggyel növeljük a jegyét, így megkapjuk a végleges érdemjegyeket.
+
+\vspace{10pt}
+
+\includegraphics[width=\textwidth]{OAF-bead4}
+
+Az adatokat az in1.txt és in2.txt fájlokból olvassuk be, az egyikben a neptun-jegy, a másikban a neptun-pont párok vannak. A megoldáshoz származtattam egy PairEnumerator osztályt az Enumerator osztályból, amely minden neptun kódra meghívja a Summmation osztályból származtatott PairSummation osztály run metódusát (átadva az aktuális neptun kódot). A PairEnumerator next metódusában ha a fenti feltétel teljesül, akkor megnöveljük az érdemjegyet. A fájl kiírásáért a Copying osztály felel, amit szintén a Summation osztályból származtattam.
+
+\vspace{18pt}
+%%%%%%%%%%%%%%%%%%%% TESZTELÉSI TERV %%%%%%%%%%%%%%%%%%%%
+{\textbf {Tesztelési terv:}}%\\[2pt]
+\begin{enumerate}[topsep=2pt,noitemsep,label=\Roman*),leftmargin=*]
+	\item A feladat specifikációjára épülõ (fekete doboz) tesztesetek:
+	\begin{enumerate}[noitemsep,label=\arabic*)]
+		\item {pont < 40}
+		\item {pont = 40}
+		\item {pont > 40 és jegy = 1}
+		\item {pont > 40 és jegy > 1 és jegy < 4}
+		\item {pont > 40 és jegy > 1 és jegy = 4}
+		\item {pont > 40 és jegy > 1 és jegy > 4}
+	
+	\end{enumerate}
+	\item A megoldó programra épülõ (fehér doboz) tesztesetek:
+	
+	A saját kódrészben egyetlen elágazás található az eredmény kiírásánál (ennek mindkét
+	ágát befutották a fekete doboz tesztesetek), ezen kívül csak szekvencia szerkezetet látunk,
+	ezért nincs szükség külön fehér doboz tesztre.
+\end{enumerate}
+\end{document}
